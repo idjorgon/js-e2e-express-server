@@ -25,23 +25,19 @@ steps:
 
 - script: |
     npm test
-    npm run generate-junit-report
-  displayName: 'Run tests and generate JUnit report'
+  displayName: 'Run tests'
 
-- task: CopyFiles@2
+- task: PublishTestResults@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: |
-       src/*
-       public/*
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy project files'
-- task: PublishPipelineArtifact@1
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/junit.xml'
+  displayName: 'Publish test results'
+
+- task: PublishBuildArtifacts@1
   inputs:
-    artifactName: e2e-server
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    publishLocation: 'pipeline'
-  displayName: 'Publish npm artifact'
+    PathtoPublish: '$(System.DefaultWorkingDirectory)'
+    ArtifactName: 'junit-artifact'
+  displayName: 'Publish JUnit XML report artifact'
 
 - script: ls -R
   displayName: List Files in Directory
