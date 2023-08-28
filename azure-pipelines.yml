@@ -39,8 +39,6 @@ steps:
 
 - script: npm test
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: JUnit
-    testResultsFiles: '**/test-results.xml'
+- script: ls -R
+  displayName: List Files in Directory
+  workingDirectory: $(System.DefaultWorkingDirectory)
